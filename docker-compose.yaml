@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  couchserver:
+    image: couchdb
+    restart: always
+    ports:
+      - "5984:5984"
+    volumes:
+      - ./couchdb/dbdata:/opt/couchdb/data
+      - ./couchdb/dbconfig:/opt/couchdb/etc/local.d
+    env_file:
+      - .env

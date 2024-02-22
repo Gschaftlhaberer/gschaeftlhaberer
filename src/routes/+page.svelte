@@ -1,2 +1,11 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+	import { Heading } from "flowbite-svelte";
+</script>
+
+<svelte:head>
+	<title>G'schäft'lhaberer</title>
+</svelte:head>
+
+<div class="text-center">
+	<Heading>G'schäft'l<wbr/>Haberer</Heading>
+</div>
