@@ -7,13 +7,13 @@
 </script>
 
 <BottomNav {activeUrl} position="absolute" classInner="grid-cols-3">
-  <BottomNavItem btnName="Home" href="/">
-    <HomeSolid />
-  </BottomNavItem>
-  <BottomNavItem btnName="Settings" href="/settings" exact={false}>
-    <AdjustmentsVerticalOutline />
-  </BottomNavItem>
-  <BottomNavItem btnName="Dark Mode">
-	<DarkMode btnClass="" />
-  </BottomNavItem>
+	<BottomNavItem btnName="Home" href="/">
+		<HomeSolid />
+	</BottomNavItem>
+	<BottomNavItem btnName="Settings" href="/settings" exact={false}>
+		<AdjustmentsVerticalOutline />
+	</BottomNavItem>
+	<BottomNavItem btnName="Dark Mode">
+		<DarkMode btnClass="" />
+	</BottomNavItem>
 </BottomNav>

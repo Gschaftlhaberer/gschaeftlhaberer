@@ -1,0 +1,10 @@
+{
+	"recommendations": [
+		"ms-azuretools.vscode-docker",
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode",
+		"svelte.svelte-vscode",
+		"ardenivanov.svelte-intellisense",
+		"vitest.explorer"
+	]
+}

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import GlobalNav from '$lib/components/GlobalNav.svelte';
 	import { setContext } from 'svelte';
 	import '../app.pcss';

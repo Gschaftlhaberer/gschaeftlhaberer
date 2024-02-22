@@ -1,5 +1,5 @@
-<script>
-	import { Heading } from "flowbite-svelte";
+<script lang="ts">
+	import { Heading } from 'flowbite-svelte';
 </script>
 
 <svelte:head>
@@ -7,5 +7,5 @@
 </svelte:head>
 
 <div class="text-center">
-	<Heading>G'schäft'l<wbr/>Haberer</Heading>
+	<Heading>G'schäft'l<wbr />Haberer</Heading>
 </div>
