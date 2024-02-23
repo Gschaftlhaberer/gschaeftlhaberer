@@ -11,23 +11,22 @@
 
 | ID   | Description                                                  | SP   | HEAD | Prio | Status |
 | ---- | ------------------------------------------------------------ | ---- | ---- | ---- | ------ |
-| 1    | Als Benutzer will ich zu Artikeln Label hinzufügen und wieder löschen können, wie zum Beispiel "Tierfutter", "Trinken", dies hilft bei der Organisation. | 1    |      | MH   |        |
-| 2    | Als Benutzer will ich eine Einkaufsliste teilen können, mittels eines Codes den ich an den Bekannten schicke, dieser hat dann genau den gleichen Nutzen mit dieser Liste wie ich. | 5    |      | MH   |        |
-| 3    | Als ein Benutzer will ich zusätzlich zu einem Artikel eine Notiz hinterlegen können, um eventuell unvorhersehbare Informationen mitzuliefern. | 1    |      | MH   |        |
-| 4    | Als Benutzer möchte ich Artikel in meiner Einkaufsliste hinzufügen und löschen können, um meine Einkäufe zu verwalten. | 2    |      | MH   |        |
-| 5    | Als Benutzer möchte ich die Reihenfolge der Artikel in meiner Einkaufsliste ändern können, um die Liste nach meinen Präferenzen oder dem Layout des Geschäfts zu organisieren. | 2    |      | SH   |        |
-| 6    | Als Benutzer möchte ich Artikel in Kategorien gruppieren können, um meine Einkäufe besser zu organisieren. | 3    |      | SH   |        |
-| 7    | Als Benutzer möchte ich die Menge jedes Artikels in meiner Einkaufsliste angeben können, um genau zu wissen, wie viel ich von jedem Artikel kaufen muss. | 2    |      | SH   |        |
-| 8    | Als Benutzer möchte ich einen Preis für jeden Artikel in meiner Liste eingeben können, um eine Schätzung der Gesamtkosten meiner Einkäufe zu haben. | 3    |      | SH   |        |
-| 9    | Als Benutzer möchte ich einen Einkauf als erledigt markieren können, um den Überblick über bereits gekaufte Artikel zu behalten. | 1    |      | N2H  |        |
-| 10   | Als Benutzer möchte ich meine Einkaufslisten speichern können, um sie später wieder verwenden oder als Vorlage für neue Listen nutzen zu können. | 3    |      | N2H  |        |
-| 11   | Als Benutzer möchte ich die Möglichkeit haben, meine Einkaufsliste per E-Mail oder Messaging-App zu teilen, um sie einfacher mit anderen zu teilen. | 2    |      | N2H  |        |
-| 12   | Als Benutzer möchte ich nach Artikeln in meiner Liste suchen können, um schnell zu finden, was ich benötige. | 2    |      | N2H  |        |
-| 13   | Als Benutzer möchte ich automatische Vorschläge für Artikel basierend auf meinen bisherigen Einkäufen erhalten, um das Erstellen neuer Listen zu vereinfachen. | 3    |      | N2H  |        |
-| 14   | Als Benutzer möchte ich Warnungen erhalten, wenn ich einen Artikel doppelt hinzufüge, um Fehler zu vermeiden. | 1    |      | N2H  |        |
-| 15   | Als Benutzer möchte ich meine Einkaufsliste auf verschiedene Geräte exportieren können, um sie überall dabei zu haben. | 2    |      | N2H  |        |
-| 16   | Als Benutzer möchte ich eine Historie meiner Einkäufe einsehen können, um vergangene Einkäufe nachvollziehen zu können. | 3    |      | N2H  |        |
+| 1    | Als Benutzer möchte ich Einkaufslisten erstellen und löschen können, um meine Einkäufe effektiv zu organisieren und zu verwalten. | 2    | JD   | MH   |        |
+| 2    | Als Benutzer möchte ich in Einkaufslisten Produkte erstellen und entfernen können, um zu wissen, welche Produkte ich bei einem Einkauf mitnehmen möchte. | 2    | JD   | MH   |        |
+| 2    | Als Benutzer möchte ich die Möglichkeit haben, meine Einkaufsliste über eine synchronisierte URL zu teilen, damit andere Personen darauf zugreifen und sie in Echtzeit sehen können, was eine effiziente Koordination von gemeinsamen Einkäufen ermöglicht. | 4    | JP   | MH   |        |
+| 3    | Als Nutzer möchte ich auch ohne Internetverbindung auf meine Einkaufslistendaten zugreifen zu können, um auch im hintersten Eck eines Geschäftes Zugriff zu haben. | 4    | LB   | MH   |        |
+| 4    | Als Benutzer möchte ich eine Auflistung aller meiner Einkaufsliste haben, um alle Geschäfte zu sehen, in dennen man einkaufen möchte. | 2    | PD   | MH   |        |
+| 5    | Als Benutzer möchte ich eine Übersicht über alle Produkte, die ich in einer Einklaufsliste habe, bekommen, um zu wissen welche Produkte ich in einem Geschäft kaufe. | 2    | PD   | MH   |        |
+| 5    | Als Benutzer möchte ich ein sicheres Authentifizierungssystem haben, das sicherstellt, dass nur autorisierte Benutzer Zugriff auf meine Einkaufslisten haben, um die Sicherheit und Privatsphäre meiner Daten zu gewährleisten. | 2    | JP   | SH   |        |
+| 6    | Als Benutzer möchte ich Listen und Produkte bearbeiten können, um auch im Nachhinein Änderungen vornehmen zu können. | 2    | JD   | SH   |        |
+| 7    | Als Mitglied des Entwicklerteams möchte ich ein Continuous Integration und Continuous Deployment System haben, welches die Richtigkeit von Änderungen automatisch testet. | 2    | LB   | SH   |        |
+| 8    | Als Bentutzer möchte ich die Anordnung meiner Produkte in einer Einkaufsliste ändern können, um meine Einkäufe nach meinen Wünschen zu priorisieren. | 2    | PD   | SH   |        |
 
 ## Zusammenfassung
 
-*Bitte hier die einzelnen Gruppenmitgliedern, mit deren Gesamtbelastung (SPs) auflisten!*
+| HEAD                    | Gesamtbelastung (SPs) |
+| ----------------------- | --------------------- |
+| Philip Damiank (PD)     | 6                     |
+| Julian Doppelhofer (JD) | 6                     |
+| Luka Bomostar (LB)      | 6                     |
+| Julian Proksch (JP)     | 6                     |
