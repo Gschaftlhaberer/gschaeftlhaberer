@@ -16,4 +16,10 @@ ___
 
 Coming soon...
 
+### Development
 
+[CONTRIBUTION.md](CONTRIBUTION.md)
+
+### User Stories
+
+[STORIES.md](STORIES.md)
