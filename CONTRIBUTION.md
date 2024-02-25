@@ -2,12 +2,12 @@
 
 ## Dependencies
 
- - node >= 18
- - pnpm
+- node >= 18
+- pnpm
 
 # Arbeitsschritte
 
-Zuerst muss das Projekt geklont werden. 
+Zuerst muss das Projekt geklont werden.
 
 ```shell
 git clone https://github.com/gschaeftlhaberer/gschaeftlhaberer.git
@@ -20,7 +20,7 @@ Anschließend müssen die Abhängigkeiten installiert werden.
 pnpm install
 ```
 
-Danach kann das Projekt gestartet werden. 
+Danach kann das Projekt gestartet werden.
 
 ```shell
 pnpm dev
