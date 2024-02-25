@@ -1,0 +1,265 @@
+name: Build and deploy release to GitHub Pages and Docker
+
+on:
+  release:
+    types: [published]
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build_site:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      #   If you're using pnpm, add this step then change the commands and cache key below to use `pnpm`
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: build
+        env:
+          #   BASE_PATH: '/${{ github.event.repository.name }}'
+          BASE_PATH: ''
+        run: |
+          pnpm run build
+
+      - name: Upload Artifacts
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # this should match the `pages` option in your adapter-static options
+          path: 'build/'
+
+  release-zip:
+    needs: build_site
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build artifact
+        id: artifact
+        uses: actions/download-artifact@v4
+        with:
+          # Name of the artifact to download.
+          # If unspecified, all artifacts for the run are downloaded.
+          # Optional.
+          name: github-pages
+
+          # The GitHub token used to authenticate with the GitHub API.
+          # This is required when downloading artifacts from a different repository or from a different workflow run.
+          # Optional. If unspecified, the action will download artifacts from the current repo and the current workflow run.
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract build artifact
+        run: mkdir ${{ github.event.repository.name }}-${{ github.event.release.tag_name }} && tar -xvf ${{ steps.artifact.outputs.download-path }}/artifact.tar -C ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
+
+      - name: Create release zip
+        run: zip -r ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.zip ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
+
+      - name: Upload release zip
+        uses: csexton/release-asset-action@3567794e918fa3068116688122a76cdeb57b5f09
+        with:
+          file: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.zip
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  release-tar-gz:
+    needs: build_site
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download build artifact
+        id: artifact
+        uses: actions/download-artifact@v4
+        with:
+          # Name of the artifact to download.
+          # If unspecified, all artifacts for the run are downloaded.
+          # Optional.
+          name: github-pages
+
+          # The GitHub token used to authenticate with the GitHub API.
+          # This is required when downloading artifacts from a different repository or from a different workflow run.
+          # Optional. If unspecified, the action will download artifacts from the current repo and the current workflow run.
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract build artifact
+        run: mkdir ${{ github.event.repository.name }}-${{ github.event.release.tag_name }} && tar -xvf ${{ steps.artifact.outputs.download-path }}/artifact.tar -C ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
+
+      - name: Create release zip
+        run: tar -czvf ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.tar.gz ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
+
+      - name: Upload release zip
+        uses: csexton/release-asset-action@3567794e918fa3068116688122a76cdeb57b5f09
+        with:
+          file: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.tar.gz
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    needs: build_site
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  docker:
+    needs: build_site
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Install the cosign tool except on PR
+      # https://github.com/sigstore/cosign-installer
+      - name: Install cosign
+        if: github.event_name != 'pull_request'
+        uses: sigstore/cosign-installer@6e04d228eb30da1757ee4e1dd75a0ec73a653e06 #v3.1.1
+        with:
+          cosign-release: 'v2.1.1'
+
+      # Set up BuildKit Docker container builder to be able to build
+      # multi-platform images and export cache
+      # https://github.com/docker/setup-buildx-action
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
+
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Extract metadata (tags, labels) for Docker
+      # https://github.com/docker/metadata-action
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Download build artifact
+        id: artifact
+        uses: actions/download-artifact@v4
+        with:
+          # Name of the artifact to download.
+          # If unspecified, all artifacts for the run are downloaded.
+          # Optional.
+          name: github-pages
+
+          # The GitHub token used to authenticate with the GitHub API.
+          # This is required when downloading artifacts from a different repository or from a different workflow run.
+          # Optional. If unspecified, the action will download artifacts from the current repo and the current workflow run.
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract build artifact
+        run: mkdir build && tar -xvf ${{ steps.artifact.outputs.download-path }}/artifact.tar -C build
+
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Sign the resulting Docker image digest except on PRs.
+      # This will only write to the public Rekor transparency log when the Docker
+      # repository is public to avoid leaking data.  If you would like to publish
+      # transparency data even for private images, pass --force to cosign below.
+      # https://github.com/sigstore/cosign
+      - name: Sign the published Docker image
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          # https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions#using-an-intermediate-environment-variable
+          TAGS: ${{ steps.meta.outputs.tags }}
+          DIGEST: ${{ steps.build-and-push.outputs.digest }}
+        # This step uses the identity token to provision an ephemeral certificate
+        # against the sigstore community Fulcio instance.
+        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      - name: Get first tag as output
+        id: get-tag
+        uses: cloudposse/github-action-jq@5ee6f7e8001ab9fe08edd1766b3ae65df088753b
+        with:
+          compact: true
+          input: ${{ steps.meta.outputs.json }}
+          script: '.tags[0]'
+          raw-output: true
+
+    outputs:
+      tag: ${{ steps.get-tag.outputs.output }}
+
+  docker-compose:
+    needs: docker
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Format docker-compose.yml
+        uses: recih/template-render-action@e9d7eeb6cbcb45411b658bd7a5fe96f8eb253bca
+        with:
+          template-file: docker-compose.template.yml
+          vars: |
+            { "tag": "${{ needs.docker.outputs.tag }}" }
+          output-file: docker-compose.yml
+
+      - name: Upload docker-compose.yml to release
+        uses: csexton/release-asset-action@3567794e918fa3068116688122a76cdeb57b5f09
+        with:
+          file: docker-compose.yml
+          github-token: ${{ secrets.GITHUB_TOKEN }}
