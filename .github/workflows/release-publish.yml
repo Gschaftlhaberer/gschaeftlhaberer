@@ -120,6 +120,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
   deploy:
+    if: false
     needs: build_site
     runs-on: ubuntu-latest
 

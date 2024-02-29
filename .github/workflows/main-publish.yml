@@ -11,9 +11,38 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build_site:
+  run_tests:
     runs-on: ubuntu-latest
-    if: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run unit tests
+        run: pnpm test:unit
+
+      - name: Install playwright browsers
+        run: pnpm exec playwright install --with-deps
+
+      - name: Run integration tests
+        run: pnpm test:integration
+
+  build_site:
+    needs: run_tests
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,6 +74,23 @@ jobs:
         with:
           # this should match the `pages` option in your adapter-static options
           path: 'build/'
+
+  deploy:
+    needs: build_site
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
 
   docker:
     needs: build_site
