@@ -42,3 +42,16 @@ pnpm test:integration
 > ```shell
 > pnpm exec playwright install
 > ```
+
+## Branches
+
+**main** Der Hauptbranch, der die aktuelle Version des Projekts enthält.  
+
+Alle anderen Branches werden nach dem Schema `category/short-description` benannt.
+
+Die Kategorien sind:
+
+- **feat/** Der Branch, der für die Entwicklung neuer Features verwendet wird.
+- **fix/** Der Branch, der für die Behebung von Fehlern verwendet wird.
+- **chore/** Der Branch, der für die Wartungsaufgaben verwendet wird.
+- **docs/** Der Branch, der für die Dokumentation verwendet wird.
