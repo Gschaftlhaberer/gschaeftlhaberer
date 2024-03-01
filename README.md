@@ -27,7 +27,7 @@ Eine Einkaufsliste für Mitglieder eines kapitalistischen Systems. Die Einkaufsl
 
 2. **Dateien auf den Webserver hochladen**: Entpacken Sie das Archiv und laden Sie die enthaltenen Dateien auf Ihren Webserver hoch. Stellen Sie sicher, dass Ihr Webserver korrekt konfiguriert ist, um die Anwendung zu hosten.
 
-3. **Datenbank einrichten**: Wenn Sie die ZIP-Methode verwenden, müssen Sie eine Datenbank manuell einrichten. Folgen Sie den Anweisungen Ihres Datenbankanbieters, um eine neue Datenbank zu erstellen, und konfigurieren Sie die Anwendung entsprechend, um eine Verbindung zu dieser Datenbank herzustellen.
+3. **Datenbank einrichten**: Wenn Sie die Webserver-Methode verwenden, müssen Sie eine Datenbank manuell einrichten. Folgen Sie den Anweisungen Ihres Datenbankanbieters, um eine neue CouchDB Datenbank zu erstellen, und konfigurieren Sie die Anwendung entsprechend, um eine Verbindung zu dieser Datenbank herzustellen.
 
 ### Development
 
