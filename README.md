@@ -25,7 +25,7 @@ Eine Einkaufsliste für Mitglieder eines kapitalistischen Systems. Die Einkaufsl
 #### Verwendung durch Hochladen auf einen Webserver
 1. **Archivdateien herunterladen**: Laden Sie die ZIP- oder tar.gz-Archive aus dem Release-Bereich des Projekts herunter. Diese Archive enthalten die notwendigen Dateien, um Gschäftl Haberer auf einem Webserver zu betreiben.
 
-2. **Dateien auf den Webserver hochladen**: Entpacken Sie das Archiv und laden Sie die enthaltenen Dateien auf Ihren Webserver hoch. Stellen Sie sicher, dass Ihr Webserver korrekt konfiguriert ist, um die Anwendung zu hosten.
+2. **Dateien auf den Webserver hochladen**: Entpacken Sie das Archiv und laden Sie die enthaltenen Dateien auf Ihren Webserver hoch. Stellen Sie sicher, dass Ihr Webserver korrekt [konfiguriert](https://kit.svelte.dev/docs/adapter-static) ist, um die Anwendung zu hosten.
 
 3. **Datenbank einrichten**: Wenn Sie die Webserver-Methode verwenden, müssen Sie eine Datenbank manuell einrichten. Folgen Sie den Anweisungen Ihres Datenbankanbieters, um eine neue CouchDB Datenbank zu erstellen, und konfigurieren Sie die Anwendung entsprechend, um eine Verbindung zu dieser Datenbank herzustellen.
 
