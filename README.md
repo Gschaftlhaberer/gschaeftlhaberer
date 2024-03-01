@@ -20,7 +20,7 @@ Eine Einkaufsliste für Mitglieder eines kapitalistischen Systems. Die Einkaufsl
 
 2. **Docker Compose ausführen**: Öffnen Sie ein Terminal oder eine Kommandozeile in dem Verzeichnis, in dem Sie die `docker-compose.yml`-Datei gespeichert haben, und führen Sie den Befehl `docker-compose up` aus. Dieser Befehl startet alle Dienste, die für Gschäftl Haberer erforderlich sind, einschließlich der Datenbank.
 
-3. **Verwenden Sie Tags**: Wenn Sie eine spezifische Version des Projekts verwenden möchten, können Sie die `docker-compose.yml`-Datei bearbeiten, um einen spezifischen Tag für die Image-Versionen anzugeben. Dies ist nützlich, um sicherzustellen, dass Sie eine stabile Version des Systems verwenden.
+3. **Verwenden Sie Tags**: Wenn Sie eine spezifische Version des Projekts verwenden möchten, können Sie die `docker-compose.yml`-Datei bearbeiten, um einen spezifischen Tag für die Image-Versionen anzugeben. Docker Images werden für den `main` branch und commits auf dem `main`-Branch veröffentlicht.
 
 #### Verwendung durch Hochladen auf einen Webserver
 1. **Archivdateien herunterladen**: Laden Sie die ZIP- oder tar.gz-Archive aus dem Release-Bereich des Projekts herunter. Diese Archive enthalten die notwendigen Dateien, um Gschäftl Haberer auf einem Webserver zu betreiben.
