@@ -1,0 +1,25 @@
+name: Compile technical document
+
+on:
+  push:
+    branches: 'main'
+    paths:
+      - 'technical-document/**'
+jobs:
+  technical_documents:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: install xelatex
+        run: sudo apt update && sudo apt-get install texlive-full texlive-xetex
+      - name: Compile technical document
+        run: |
+          cd technical-document
+          ./maketex -x
+      - name: Rename technical document
+        run: mv technical-document/main.pdf technical-document.pdf
+      - name: Upload technical document
+        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3
+        with:
+          path: technical-document.pdf

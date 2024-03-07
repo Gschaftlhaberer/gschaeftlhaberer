@@ -3,6 +3,13 @@ name: Build and deploy to GitHub Pages and Docker
 on:
   push:
     branches: 'main'
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+      - 'CONTRIBUTING.md'
+      - 'STORIES.md'
+      - '.vscode/**'
+      - 'technical-document/**'
 
 env:
   # Use docker.io for Docker Hub if empty
