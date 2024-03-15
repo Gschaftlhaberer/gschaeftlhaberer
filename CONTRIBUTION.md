@@ -51,7 +51,7 @@ Alle anderen Branches werden nach dem Schema `category/short-description` benann
 
 Die Kategorien sind:
 
-- **feat/** Der Branch, der für die Entwicklung neuer Features verwendet wird.
-- **fix/** Der Branch, der für die Behebung von Fehlern verwendet wird.
-- **chore/** Der Branch, der für die Wartungsaufgaben verwendet wird.
-- **docs/** Der Branch, der für die Dokumentation verwendet wird.
+- **feat/** Branches, die für die Entwicklung neuer Features verwendet werden.
+- **fix/** Branches, die für die Behebung von Fehlern verwendet werden.
+- **chore/** Branches, die für die Wartungsaufgaben verwendet werden.
+- **docs/** Branches, die für die Dokumentation verwendet werden.
