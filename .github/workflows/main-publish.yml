@@ -3,13 +3,15 @@ name: Build and deploy to GitHub Pages and Docker
 on:
   push:
     branches: "main"
-    paths-ignore:
-      - "README.md"
-      - "LICENSE"
-      - "CONTRIBUTING.md"
-      - "STORIES.md"
-      - ".vscode/**"
-      - "technical-document/**"
+    paths:
+      - "!README.md"
+      - "!LICENSE"
+      - "!CONTRIBUTING.md"
+      - "!STORIES.md"
+      - "!.vscode/**"
+      - "!technical-document/**"
+      - "!.github/**"
+      - ".github/workflows/main-publish.yml"
 
 env:
   # Use docker.io for Docker Hub if empty

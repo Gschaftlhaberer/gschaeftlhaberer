@@ -5,6 +5,7 @@ on:
     branches: "main"
     paths:
       - "technical-document/**"
+      - ".github/workflows/main-technical-document.yml"
 jobs:
   technical_documents:
     runs-on: ubuntu-latest
@@ -13,10 +14,9 @@ jobs:
         uses: actions/checkout@v4
       - name: install xelatex
         run: sudo apt update && sudo apt-get install texlive-full texlive-xetex
-      - run: cd technical-document
       - name: Compile technical document
-        run: |
-          ./maketex -x
+        working-directory: technical-document
+        run: ./maketex -x
       - name: Rename technical document
         run: mv technical-document/main.pdf technical-document.pdf
       - name: Upload technical document
