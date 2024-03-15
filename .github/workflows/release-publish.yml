@@ -53,9 +53,6 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Download build artifact
         id: artifact
         uses: actions/download-artifact@v4
@@ -90,9 +87,6 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Download build artifact
         id: artifact
         uses: actions/download-artifact@v4
@@ -110,10 +104,10 @@ jobs:
       - name: Extract build artifact
         run: mkdir ${{ github.event.repository.name }}-${{ github.event.release.tag_name }} && tar -xvf ${{ steps.artifact.outputs.download-path }}/artifact.tar -C ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
 
-      - name: Create release zip
+      - name: Create release tar.gz
         run: tar -czvf ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.tar.gz ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}
 
-      - name: Upload release zip
+      - name: Upload release tar.gz
         uses: csexton/release-asset-action@3567794e918fa3068116688122a76cdeb57b5f09
         with:
           file: ${{ github.event.repository.name }}-${{ github.event.release.tag_name }}.tar.gz
@@ -207,6 +201,7 @@ jobs:
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
           context: .
+          file: docker/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -254,7 +249,7 @@ jobs:
       - name: Format docker-compose.yml
         uses: recih/template-render-action@e9d7eeb6cbcb45411b658bd7a5fe96f8eb253bca
         with:
-          template-file: docker-compose.template.yml
+          template-file: docker/docker-compose.template.yml
           vars: |
             { "tag": "${{ needs.docker.outputs.tag }}" }
           output-file: docker-compose.yml

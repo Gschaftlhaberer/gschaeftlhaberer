@@ -1,0 +1,20 @@
+%!TEX root=../protocol.tex	% Optional
+\section{Architektur}
+
+Die Anwendung "Gschäftlhaberer" soll Grunsätzlich wie folgt aufgebaut werden:
+
+\vspace{1em}
+
+\begin{center}
+	\includegraphics[width=0.8\textwidth]{images/architecture.png}
+\end{center}
+
+Zuerst wird die Anwendung in Form eines SvelteKit Static-Adapter Bundles, bestehend aus HTML, CSS und Javascript Dateien, von einem statischen Webserver (GitHub Pages) heruntergeladen [1]. Diese Datei registiert sich angschließend im Browser als Webworker und richtet einen Cache für die Anwendungsdateien ein, um Offline-Verfügbarkeit zu ermöglichen. Optional kann sie hier auch als PWA (Progressive Web App installiert werden). Der Nutzer interagiert mit diser im Browser gezeigten Anwendung [2], welche als Daten-Basis eine im Browser laufende PouchDB-Instanz verwendet [3]. Um die Einkaufsliste anschließend teilen zu können, kann sie auf eine CouchDB Instanz synchronisiert werden [4].
+
+\subsection{Gewählte Technologien}
+
+\begin{description}
+    \item[SvelteKit] verzichtet im Gegensatz zu Ansätzen wie Vue und React auf einen virtuellen DOM und compiled stattdessen den Code in Vanilla-JS Code, der direkt mit dem Browser DOM integriert. Außerdem bietet SvelteKit eine integrierte Möglichkeit einen Web-Worker zu installieren.
+    \item[CouchDB] ist eine Dokument basierte NoSQL Datenbank, die ein RESTful API bereitstellt. Sie ist für die Synchronisation von Daten zwischen verschiedenen Geräten ausgelegt.
+    \item[PouchDB] ist eine Javascript Datenbank, welche als Speicher Browser APIs verwendet und damit in WebApps verwendet werden kann. Zusätzlich bietet sie eine Möglichkeit mit CouchDB kompatiblen Datenbanken zu synchronisieren.
+\end{description}

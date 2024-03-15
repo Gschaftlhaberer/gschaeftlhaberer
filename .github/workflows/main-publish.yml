@@ -3,6 +3,13 @@ name: Build and deploy to GitHub Pages and Docker
 on:
   push:
     branches: 'main'
+    paths-ignore:
+      - 'README.md'
+      - 'LICENSE'
+      - 'CONTRIBUTING.md'
+      - 'STORIES.md'
+      - '.vscode/**'
+      - 'technical-document/**'
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -31,11 +38,28 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Lint code
+        run: pnpm lint
+
+      - name: Check code
+        run: pnpm check
+
       - name: Run unit tests
         run: pnpm test:unit
 
+      - name: Get installed Playwright version
+        id: playwright-version
+        run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package-lock.json').devDependencies['@playwright/test'].version)")" >> $GITHUB_ENV
+      - name: Cache playwright binaries
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
       - name: Install playwright browsers
         run: pnpm exec playwright install --with-deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       - name: Run integration tests
         run: pnpm test:integration
@@ -162,6 +186,7 @@ jobs:
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
           context: .
+          file: docker/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

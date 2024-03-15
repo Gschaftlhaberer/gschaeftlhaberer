@@ -26,19 +26,23 @@ Danach kann das Projekt gestartet werden.
 pnpm dev
 pnpm dev:open # öffnet das Projekt im Browser
 ```
+
 ## Testen
 
 Die Unit Tests können mit dem folgenden Befehl ausgeführt werden.
+
 ```shell
 pnpm test:unit
 ```
 
 Die Integrationstests können mit dem folgenden Befehl ausgeführt werden.
+
 ```shell
 pnpm test:integration
 ```
 
-> Für die Integrationstests sind Dependencies notwendig, die mit dem folgenden Befehl installiert werden können. 
+> Für die Integrationstests sind Dependencies notwendig, die mit dem folgenden Befehl installiert werden können.
+>
 > ```shell
 > pnpm exec playwright install
 > ```
