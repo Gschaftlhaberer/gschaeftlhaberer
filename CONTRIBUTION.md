@@ -2,9 +2,9 @@
 
 ## Dependencies
 
-- node >= 18
-- pnpm
-- docker & docker-compose
+- [node](https://nodejs.org/en/download) >= 18
+- [pnpm](https://pnpm.io/installation)
+- [docker](https://docs.docker.com/get-docker/) & [docker-compose](https://docs.docker.com/compose/install/)
 
 ## Setup
 
@@ -42,13 +42,13 @@ docker-compose up -d
 
 ## Testen
 
-Die Unit Tests können mit dem folgenden Befehl ausgeführt werden.
+Für Unit-Tests kommt im Projekt [vitest](https://vitest.dev/) zum Einsatz. Die Tests können mit dem folgenden Befehl ausgeführt werden.
 
 ```shell
 pnpm test:unit
 ```
 
-Die Integrationstests können mit dem folgenden Befehl ausgeführt werden.
+Für Integrationstests kommt [Playwright](https://playwright.dev/) zum Einsatz. Die Tests können mit dem folgenden Befehl ausgeführt werden.
 
 ```shell
 pnpm test:integration
@@ -60,13 +60,23 @@ pnpm test:integration
 > pnpm exec playwright install
 > ```
 
+Als shortcut für beide Testarten kann der folgende Befehl verwendet werden.
+
+```shell
+pnpm test
+```
+
 ## Entwicklung
 
-Das Projekt baut auf [SvelteKit](https://kit.svelte.dev/docs) auf. Die Startseite ist in [src/routes/+page.svelte](src/routes/+page.svelte) zu finden. Weitere Dokumentation zu SvelteKit Routing und Layouts ist [hier](https://kit.svelte.dev/docs/routing) zu finden.
+Das Projekt baut auf [SvelteKit](https://kit.svelte.dev/docs) auf.
 
-Als Datenbank im Browser kommt [PouchDB](https://pouchdb.com/) zum Einsatz. Diese wird in der Datei [src/routes/+layout.svelte](src/routes/+layout.svelte) erstellt und ist in der gesamten Anwendung über den [Kontext](https://svelte.dev/docs/svelte#setcontext) mittels der Funktion `getDb` verfügbar. Die API von PouchDB ist [hier](https://pouchdb.com/api.html) dokumentiert.
+Die Startseite ist in [app/src/routes/+page.svelte](app/src/routes/+page.svelte) zu finden. Alle Unterordner unter [app/src/routes](app/src/routes) sind ein Teil des Pfades unter dem eine Seite verfügbar ist (`/settings` -> [app/src/routes/**settings**/+page.svelte](app/src/routes/settings/+page.svelte)). SvelteKit ordnen manchen Dateinamen spezielle Bedeutung zu, von welchen [`+page.svelte`](https://kit.svelte.dev/docs/routing#page) und [`+layout.svelte`](https://kit.svelte.dev/docs/routing#layout) die wichtigsten sind. `+page.svelte` defininiert, was angezeigt wird, wenn der Pfad aufgerufen wird. `+layout.svelte` enthält den Inhalt, welcher um die `+page.svelte` im aktuellen Verzeichnis und allen `+page.svelte` und `+layout.svelte` Dateien, welche in Unterordern liegen gerendered wird. Der Inhalt wird an Stelle der `<slot>` Komponente eingefügt. Weitere Dokumentation zu SvelteKit Routing und Layouts ist [hier](https://kit.svelte.dev/docs/routing) zu finden.
 
-Als component library steht in diesem Projekt (Flowbite Svelte)[https://flowbite-svelte.com/docs/components] zur Verfügung.
+Library Funktionen und Komponenten (also jene, die in mehreren Dateien verwendet werden) sind in [app/src/lib](app/src/lib) zu finden.
+
+Als Datenbank im Browser kommt [PouchDB](https://pouchdb.com/) zum Einsatz. Diese wird in der Datei [app/src/routes/+layout.svelte](app/src/routes/+layout.svelte) erstellt und ist in der gesamten Anwendung über den [Kontext](https://svelte.dev/docs/svelte#setcontext) mittels der Funktion `getDb` verfügbar. Die API von PouchDB ist [hier](https://pouchdb.com/api.html) dokumentiert.
+
+Als component library steht in diesem Projekt (Flowbite Svelte)[https://flowbite-svelte.com/docs/components] zur Verfügung und baut auf [Tailwind CSS](https://tailwindcss.com/docs) auf, welches für zusätzliche Stylingmöglichkeiten verwendet werden kann.
 
 ## Branches
 
