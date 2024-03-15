@@ -6,10 +6,10 @@ Eine Einkaufsliste für Mitglieder eines kapitalistischen Systems. Die Einkaufsl
 
 ### **Teammitglieder**
 
-- Luka Bomostar 5BHIT
-- Julian Doppelhofer 5BHIT
-- Philip Damianik 5BHIT
-- Julian Proksch 5DHIT
+- Philip Damianik 5BHIT - Technical Architect
+- Julian Doppelhofer 5BHIT - Product Owner
+- Luka Bomostar 5BHIT - Ameise
+- Julian Proksch 5DHIT - Ameise
 
 ---
 
