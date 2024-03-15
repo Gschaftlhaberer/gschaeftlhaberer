@@ -45,7 +45,7 @@ pnpm test:integration
 
 ## Branches
 
-**main** Der Hauptbranch, der die aktuelle Version des Projekts enthält.  
+**main** Der Hauptbranch, der die aktuelle Entwicklungsversion des Projekts enthält.
 
 Alle anderen Branches werden nach dem Schema `category/short-description` benannt.
 
