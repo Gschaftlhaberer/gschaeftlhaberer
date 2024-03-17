@@ -6,6 +6,11 @@ on:
     paths:
       - "technical-document/**"
       - ".github/workflows/main-technical-document.yml"
+  pull_request:
+    branches: "main"
+    paths:
+      - "technical-document/**"
+      - ".github/workflows/main-technical-document.yml"
 jobs:
   technical_documents:
     runs-on: ubuntu-latest
