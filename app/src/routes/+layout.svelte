@@ -1,13 +1,12 @@
 <script lang="ts">
 	import GlobalNav from '$lib/components/GlobalNav.svelte';
-	import { setContext } from 'svelte';
 	import '../app.pcss';
-
-	import PouchDB from 'pouchdb';
-
-	setContext('db', new PouchDB('shopping'));
 </script>
 
-<slot />
+<div class="mx-auto w-full max-w-[35rem]">
+	<div class="mx-6">
+		<slot />
+	</div>
+</div>
 
 <GlobalNav />
