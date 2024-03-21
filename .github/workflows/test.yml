@@ -7,6 +7,8 @@ on:
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - "technical-document/**"
 
 jobs:
   test:
@@ -25,20 +27,26 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
+          cache-dependency-path: app
 
       - name: Install dependencies
+        working-directory: app
         run: pnpm install
 
       - name: Lint code
+        working-directory: app
         run: pnpm lint
 
       - name: Check code
+        working-directory: app
         run: pnpm check
 
       - name: Run unit tests
+        working-directory: app
         run: pnpm test:unit
 
       - name: Get installed Playwright version
+        working-directory: app
         id: playwright-version
         run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package-lock.json').devDependencies['@playwright/test'].version)")" >> $GITHUB_ENV
       - name: Cache playwright binaries
@@ -49,8 +57,10 @@ jobs:
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
       - name: Install playwright browsers
+        working-directory: app
         run: pnpm exec playwright install --with-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       - name: Run integration tests
+        working-directory: app
         run: pnpm test:integration

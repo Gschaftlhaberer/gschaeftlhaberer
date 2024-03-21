@@ -2,9 +2,15 @@ name: Compile technical document
 
 on:
   push:
-    branches: 'main'
+    branches: "main"
     paths:
-      - 'technical-document/**'
+      - "technical-document/**"
+      - ".github/workflows/main-technical-document.yml"
+  pull_request:
+    branches: "main"
+    paths:
+      - "technical-document/**"
+      - ".github/workflows/main-technical-document.yml"
 jobs:
   technical_documents:
     runs-on: ubuntu-latest
@@ -14,9 +20,8 @@ jobs:
       - name: install xelatex
         run: sudo apt update && sudo apt-get install texlive-full texlive-xetex
       - name: Compile technical document
-        run: |
-          cd technical-document
-          ./maketex -x
+        working-directory: technical-document
+        run: ./maketex -x
       - name: Rename technical document
         run: mv technical-document/main.pdf technical-document.pdf
       - name: Upload technical document

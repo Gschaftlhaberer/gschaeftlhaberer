@@ -2,14 +2,16 @@ name: Build and deploy to GitHub Pages and Docker
 
 on:
   push:
-    branches: 'main'
-    paths-ignore:
-      - 'README.md'
-      - 'LICENSE'
-      - 'CONTRIBUTING.md'
-      - 'STORIES.md'
-      - '.vscode/**'
-      - 'technical-document/**'
+    branches: "main"
+    paths:
+      - "!README.md"
+      - "!LICENSE"
+      - "!CONTRIBUTING.md"
+      - "!STORIES.md"
+      - "!.vscode/**"
+      - "!technical-document/**"
+      - "!.github/**"
+      - ".github/workflows/main-publish.yml"
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -34,20 +36,26 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
+          cache-dependency-path: app
 
       - name: Install dependencies
+        working-directory: app
         run: pnpm install
 
       - name: Lint code
+        working-directory: app
         run: pnpm lint
 
       - name: Check code
+        working-directory: app
         run: pnpm check
 
       - name: Run unit tests
+        working-directory: app
         run: pnpm test:unit
 
       - name: Get installed Playwright version
+        working-directory: app
         id: playwright-version
         run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package-lock.json').devDependencies['@playwright/test'].version)")" >> $GITHUB_ENV
       - name: Cache playwright binaries
@@ -58,10 +66,12 @@ jobs:
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
       - name: Install playwright browsers
+        working-directory: app
         run: pnpm exec playwright install --with-deps
         if: steps.playwright-cache.outputs.cache-hit != 'true'
 
       - name: Run integration tests
+        working-directory: app
         run: pnpm test:integration
 
   build_site:
@@ -82,14 +92,17 @@ jobs:
         with:
           node-version: 20
           cache: pnpm
+          cache-dependency-path: app
 
       - name: Install dependencies
+        working-directory: app
         run: pnpm install
 
       - name: build
+        working-directory: app
         env:
           #   BASE_PATH: '/${{ github.event.repository.name }}'
-          BASE_PATH: ''
+          BASE_PATH: ""
         run: |
           pnpm run build
 
@@ -97,7 +110,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # this should match the `pages` option in your adapter-static options
-          path: 'build/'
+          path: "app/build/"
 
   deploy:
     needs: build_site
@@ -136,7 +149,7 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: sigstore/cosign-installer@6e04d228eb30da1757ee4e1dd75a0ec73a653e06 #v3.1.1
         with:
-          cosign-release: 'v2.1.1'
+          cosign-release: "v2.1.1"
 
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache
