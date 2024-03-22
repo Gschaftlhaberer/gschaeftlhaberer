@@ -1,15 +1,55 @@
 <script lang="ts">
 	import { Heading, ListPlaceholder, Alert, P } from 'flowbite-svelte';
 	import type { PageData } from './$types';
-	import { type ExistingDocument, type ProductList as PL } from '$lib/db';
+	import { db, type ExistingDocument, type ProductList as PL } from '$lib/db';
 	import ProductList from '$lib/components/ProductList.svelte';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 
 	export let lists: ExistingDocument<PL>[] = [];
+	let cancel_changes: (() => void)[] = [];
+
+	onMount(() => {
+		return () => {
+			cancel_changes.forEach((cancel) => {
+				cancel();
+			});
+		};
+	});
 
 	data.lists.then((result) => {
 		lists = result.docs;
+		cancel_changes = [
+			...cancel_changes,
+			$db
+				.changes({
+					since: 'now',
+					live: true,
+					include_docs: true,
+					filter: (doc) => {
+						console.log(doc);
+						return doc.type === 'list' || doc._deleted;
+					}
+				})
+				.on('change', (change) => {
+					console.log('change', change);
+					if (change.deleted) {
+						lists = lists.filter((list) => list._id !== change.id);
+					} else {
+						const index = lists.findIndex((list) => list._id === change.id);
+						if (change.doc) {
+							if (index === -1) {
+								lists = [...lists, change.doc];
+							} else {
+								lists[index] = change.doc;
+							}
+						} else {
+							console.error('Unreachable. Change event without doc.');
+						}
+					}
+				}).cancel
+		];
 		return result;
 	});
 </script>
