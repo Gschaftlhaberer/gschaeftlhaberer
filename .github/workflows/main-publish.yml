@@ -12,6 +12,7 @@ on:
       - "!technical-document/**"
       - "!.github/**"
       - ".github/workflows/main-publish.yml"
+      - "app/**"
 
 env:
   # Use docker.io for Docker Hub if empty
