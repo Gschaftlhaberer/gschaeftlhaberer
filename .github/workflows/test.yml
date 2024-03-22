@@ -48,7 +48,7 @@ jobs:
       - name: Get installed Playwright version
         working-directory: app
         id: playwright-version
-        run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package-lock.json').devDependencies['@playwright/test'].version)")" >> $GITHUB_ENV
+        run: echo "PLAYWRIGHT_VERSION=$(node -e "const YAML = require('yaml'); const file = fs.readFileSync('./pnpm-lock.yaml', 'utf-8'); console.log(YAML.parse(file).devDependencies['@playwright/test'].version)")" >> $GITHUB_ENV
       - name: Cache playwright binaries
         uses: actions/cache@v3
         id: playwright-cache
