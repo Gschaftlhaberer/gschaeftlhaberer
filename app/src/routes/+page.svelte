@@ -14,7 +14,9 @@
 	onMount(() => {
 		return () => {
 			cancel_changes.forEach((cancel) => {
-				cancel();
+				if (cancel) {
+					cancel();
+				}
 			});
 		};
 	});
