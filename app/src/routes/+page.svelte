@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte';
 
 	export let data: PageData;
+	console.log($db);
 
 	export let lists: ExistingDocument<PL>[] = [];
 	let cancel_changes: (() => void)[] = [];

@@ -15,12 +15,8 @@ export type NewDocument<Content extends object> = Content;
 export type Document<Content extends object> = Content & IdMeta;
 export type ExistingDocument<Content extends object> = Document<Content> & RevisionIdMeta;
 
-export interface Item {
-	type: string;
-	version: string;
-}
-
-export interface ProductList extends Item {
+export interface ProductList {
+	type: 'list';
 	name: string;
 }
 
