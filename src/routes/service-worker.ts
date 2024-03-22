@@ -1,23 +1,17 @@
 /// <reference types="@sveltejs/kit" />
 import { build, files, version } from '$service-worker';
-import { ExtendableEvent } from 'workbox-core'; // Import the 'ExtendableEvent' type from the correct module.
 
+// Create a unique cache name for this deployment
 const CACHE = `cache-${version}`;
 
-const ASSETS = [...build, ...files];
+const ASSETS = [
+	...build, // the app itself
+	...files // everything in `static`
+];
 
-self.addEventListener('install', (event: Event) => {
-	const serviceWorkerEvent: ExtendableEvent = event as ExtendableEvent;
-
-	async function addFilesToCache() {
-		const cache = await caches.open(CACHE);
-		await cache.addAll(ASSETS);
-	}
-
-	serviceWorkerEvent.waitUntil(addFilesToCache());
-});
-
-self.addEventListener('install', (event: ExtendableEvent) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+self.addEventListener('install', (event: any) => {
+	// Create a new cache and add all files to it
 	async function addFilesToCache() {
 		const cache = await caches.open(CACHE);
 		await cache.addAll(ASSETS);
@@ -26,13 +20,28 @@ self.addEventListener('install', (event: ExtendableEvent) => {
 	event.waitUntil(addFilesToCache());
 });
 
-self.addEventListener('fetch', (event: FetchEvent) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+self.addEventListener('activate', (event: any) => {
+	// Remove previous cached data from disk
+	async function deleteOldCaches() {
+		for (const key of await caches.keys()) {
+			if (key !== CACHE) await caches.delete(key);
+		}
+	}
+
+	event.waitUntil(deleteOldCaches());
+});
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+self.addEventListener('fetch', (event: any) => {
+	// ignore POST requests etc
 	if (event.request.method !== 'GET') return;
 
 	async function respond() {
 		const url = new URL(event.request.url);
 		const cache = await caches.open(CACHE);
 
+		// `build`/`files` can always be served from the cache
 		if (ASSETS.includes(url.pathname)) {
 			const response = await cache.match(url.pathname);
 
@@ -41,9 +50,13 @@ self.addEventListener('fetch', (event: FetchEvent) => {
 			}
 		}
 
+		// for everything else, try the network first, but
+		// fall back to the cache if we're offline
 		try {
 			const response = await fetch(event.request);
 
+			// if we're offline, fetch can return a value that is not a Response
+			// instead of throwing - and we can't pass this non-Response to respondWith
 			if (!(response instanceof Response)) {
 				throw new Error('invalid response from fetch');
 			}
@@ -60,6 +73,8 @@ self.addEventListener('fetch', (event: FetchEvent) => {
 				return response;
 			}
 
+			// if there's no cache, then just error out
+			// as there is nothing we can do to respond to this request
 			throw err;
 		}
 	}
