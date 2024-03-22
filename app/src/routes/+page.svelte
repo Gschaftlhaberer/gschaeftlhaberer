@@ -3,26 +3,15 @@
 	import type { PageData } from './$types';
 	import { db, type ExistingDocument, type ProductList as PL } from '$lib/db';
 	import ProductList from '$lib/components/ProductList.svelte';
-	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 
 	export let data: PageData;
-	console.log($db);
 
 	export let lists: ExistingDocument<PL>[] = [];
-	let cancel_changes: (() => void)[] = [];
-
-	onMount(() => {
-		return () => {
-			cancel_changes.forEach((cancel) => {
-				cancel();
-			});
-		};
-	});
 
 	data.lists.then((result) => {
 		lists = result.docs;
-		cancel_changes = [
-			...cancel_changes,
+		if (browser) {
 			$db
 				.changes({
 					since: 'now',
@@ -49,8 +38,8 @@
 							console.error('Unreachable. Change event without doc.');
 						}
 					}
-				}).cancel
-		];
+				}).cancel;
+		}
 		return result;
 	});
 </script>
