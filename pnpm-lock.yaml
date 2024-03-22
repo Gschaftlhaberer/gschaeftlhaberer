@@ -29,6 +29,9 @@ devDependencies:
   '@types/pouchdb':
     specifier: ^6.4.2
     version: 6.4.2
+  '@types/pouchdb-find':
+    specifier: ^7.3.3
+    version: 7.3.3
   '@typescript-eslint/eslint-plugin':
     specifier: ^7.0.0
     version: 7.0.2(@typescript-eslint/parser@7.0.2)(eslint@8.56.0)(typescript@5.3.3)
@@ -63,6 +66,9 @@ devDependencies:
     specifier: ^5.0.2
     version: 5.0.3(postcss@8.4.35)
   pouchdb:
+    specifier: ^8.0.1
+    version: 8.0.1
+  pouchdb-find:
     specifier: ^8.0.1
     version: 8.0.1
   prettier:
@@ -2777,6 +2783,95 @@ packages:
       nanoid: 3.3.7
       picocolors: 1.0.0
       source-map-js: 1.0.2
+    dev: true
+
+  /pouchdb-abstract-mapreduce@8.0.1:
+    resolution: {integrity: sha512-BxJRHdfiC8gID8h4DPS0Xy6wsa2VBHRHMv9hsm0BhGTWTqS4k8ivItVSeU2dMoXiTBYp+7SerYmovUQNGSX1GA==}
+    dependencies:
+      pouchdb-binary-utils: 8.0.1
+      pouchdb-collate: 8.0.1
+      pouchdb-collections: 8.0.1
+      pouchdb-errors: 8.0.1
+      pouchdb-fetch: 8.0.1
+      pouchdb-mapreduce-utils: 8.0.1
+      pouchdb-md5: 8.0.1
+      pouchdb-utils: 8.0.1
+    transitivePeerDependencies:
+      - encoding
+    dev: true
+
+  /pouchdb-binary-utils@8.0.1:
+    resolution: {integrity: sha512-WsuR/S0aoUlcA0Alt99czkXsfuXWcrYXAcvGiTW02zawVXOafCnb/qHjA09TUaV0oy5HeHmYaNnDckoOUqspeA==}
+    dependencies:
+      buffer-from: 1.1.2
+    dev: true
+
+  /pouchdb-collate@8.0.1:
+    resolution: {integrity: sha512-DTuNz1UJjBTGZMUlWS1klSE1rPsmHy8IIDie3MFH1ZTz/C+SwGgGwkiAyUDv/n00D18EMLgXq5mu+r7L6K1BwQ==}
+    dev: true
+
+  /pouchdb-collections@8.0.1:
+    resolution: {integrity: sha512-TlkQ2GGHJApJgL0b7bJMQcwX6eMfVenLeoK9mqHfC2fJssui+HWJJ5LYKHOWan11SeB90BQVFbO6rHN6CJQeDg==}
+    dev: true
+
+  /pouchdb-errors@8.0.1:
+    resolution: {integrity: sha512-H+ZsQxcG/JV3Tn29gnM6c9+lRPCN91ZYOkoIICsLjVRYgOTzN1AvNUD/G5JCB+81aI/u3fxZec0LEaZh6g6NHA==}
+    dev: true
+
+  /pouchdb-fetch@8.0.1:
+    resolution: {integrity: sha512-Px5HLT8MxqTujc8bpPRKoouznDTJa9XBGqCbhl95q6rhjWRfwZEvXjV92z0B5BALAM6D6avMyG0DjuNfUWnMuA==}
+    dependencies:
+      abort-controller: 3.0.0
+      fetch-cookie: 0.11.0
+      node-fetch: 2.6.7
+    transitivePeerDependencies:
+      - encoding
+    dev: true
+
+  /pouchdb-find@8.0.1:
+    resolution: {integrity: sha512-i5criYXMOXlbeRrCrXonqaOY+xiMiOyTLybqvtX/NkUsiD4BxJxkq5AxdSlHdJ9703nWJ0k6S+5C8VrpEj8tsQ==}
+    dependencies:
+      pouchdb-abstract-mapreduce: 8.0.1
+      pouchdb-collate: 8.0.1
+      pouchdb-errors: 8.0.1
+      pouchdb-fetch: 8.0.1
+      pouchdb-md5: 8.0.1
+      pouchdb-selector-core: 8.0.1
+      pouchdb-utils: 8.0.1
+    transitivePeerDependencies:
+      - encoding
+    dev: true
+
+  /pouchdb-mapreduce-utils@8.0.1:
+    resolution: {integrity: sha512-asZcFLy1DA3oe5CeXIRCpfVrBHaHRvSb3Tc/LPD1dZDDtpEkeCuXGtJm+praN0jl41jTBEm0uMdD/YI0J5ZFXw==}
+    dependencies:
+      pouchdb-collections: 8.0.1
+      pouchdb-utils: 8.0.1
+    dev: true
+
+  /pouchdb-md5@8.0.1:
+    resolution: {integrity: sha512-shVcs/K/iilrcAhDEERpLIrGm/cnDVsXiocOzs7kycJEuBqYnLD9nj58VwWDcum26wfa8T9cznvEGE1jlYVNPQ==}
+    dependencies:
+      pouchdb-binary-utils: 8.0.1
+      spark-md5: 3.0.2
+    dev: true
+
+  /pouchdb-selector-core@8.0.1:
+    resolution: {integrity: sha512-dHWsnR+mLGyfVld1vSHJI1xKTwS1xk1G2dggjfXfUrLehI+wysjTUOwiSNytyPzG6DpT+o86wyUpwzPwsDCLBw==}
+    dependencies:
+      pouchdb-collate: 8.0.1
+      pouchdb-utils: 8.0.1
+    dev: true
+
+  /pouchdb-utils@8.0.1:
+    resolution: {integrity: sha512-pWgxdk9EHVWJmjQoEvTe+ZlPXyjcuQ/vgLITN+RjGwcYhoQYUE1M0PksQd2dUP3V8lGS4+wrg9lEM/qSJPYcpw==}
+    dependencies:
+      clone-buffer: 1.0.0
+      immediate: 3.3.0
+      pouchdb-collections: 8.0.1
+      pouchdb-errors: 8.0.1
+      pouchdb-md5: 8.0.1
+      uuid: 8.3.2
     dev: true
 
   /pouchdb@8.0.1:
