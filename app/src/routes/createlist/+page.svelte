@@ -2,6 +2,7 @@
 	import { db as DB } from '$lib/db';
 	import { get } from 'svelte/store';
 	import { Button, Input, Label } from 'flowbite-svelte';
+	import { goto } from '$app/navigation';
 
 	let name = '';
 
@@ -14,11 +15,12 @@
 				version: ''
 			});
 			name = '';
+			goto('/');
 		}
 	}
 </script>
 
-<div class="flex min-h-screen flex-col items-center justify-center bg-gray-100">
+<div class="flex min-h-screen flex-col items-center justify-center">
 	<h1 class="mb-8 text-3xl font-bold text-gray-700">Neue Einkaufsliste erstellen</h1>
 
 	<form
