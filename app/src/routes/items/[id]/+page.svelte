@@ -41,6 +41,31 @@
 		}
 		return result;
 	});
+
+	import { db as DB } from '$lib/db';
+	import { get } from 'svelte/store';
+	import { Button, Card, Input } from 'flowbite-svelte';
+
+	let showPopup = false;
+	let productName = '';
+	let productCount = 1;
+
+	async function createProduct() {
+		if (productName.trim() !== '') {
+			console.log(`Produkt erstellt: ${productName}`);
+			const db = get(DB);
+			await db.put({
+				_id: `${data.id}:${productName}`,
+				type: 'product',
+				list: data.id,
+				name: productName,
+				count: productCount
+			});
+			productName = '';
+			productCount = 1;
+			showPopup = false;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -62,3 +87,27 @@
 		<Alert color="red">Ein Fehler ist aufgetreten: {error.message}</Alert>
 	{/await}
 </div>
+
+<div class="flex items-center justify-center">
+	<Button on:click={() => (showPopup = true)}>Produkt erstellen</Button>
+</div>
+
+{#if showPopup}
+	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+		<Card class="rounded bg-white p-6 shadow-lg">
+			<h2 class="mb-4 text-center text-xl font-bold">Produkt erstellen</h2>
+			<Input bind:value={productName} placeholder="Produktname" class="mb-4" />
+			<Input type="number" bind:value={productCount} placeholder="Anzahl" class="mb-4" />
+			<div class="flex justify-end space-x-2">
+				<Button on:click={createProduct} class="bg-blue-500 text-white hover:bg-blue-700"
+					>Erstellen</Button
+				>
+				<Button
+					variant="secondary"
+					on:click={() => (showPopup = false)}
+					class="bg-gray-500 text-white hover:bg-gray-700">Schließen</Button
+				>
+			</div>
+		</Card>
+	</div>
+{/if}

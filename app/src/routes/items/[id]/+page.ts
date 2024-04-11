@@ -6,7 +6,8 @@ import type { PageLoad } from './$types';
 export const load: PageLoad = async ({ params: { id } }) => {
 	if (!browser) {
 		return {
-			products: Promise.resolve({ docs: [] })
+			products: Promise.resolve({ docs: [] }),
+			id
 		};
 	}
 
@@ -25,6 +26,7 @@ export const load: PageLoad = async ({ params: { id } }) => {
 			return await db.find(query);
 		});
 	return {
-		products
+		products,
+		id
 	};
 };
