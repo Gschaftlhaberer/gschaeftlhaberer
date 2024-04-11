@@ -10,7 +10,7 @@
 	export let lists: ExistingDocument<PL>[] = [];
 
 	data.lists.then((result) => {
-		lists = result.docs;
+		lists = result.docs as never[] | ExistingDocument<PL>[];
 		if (browser) {
 			$db
 				.changes({
@@ -18,17 +18,15 @@
 					live: true,
 					include_docs: true,
 					filter: (doc) => {
-						console.log(doc);
 						return doc.type === 'list' || doc._deleted;
 					}
 				})
 				.on('change', (change) => {
-					console.log('change', change);
 					if (change.deleted) {
 						lists = lists.filter((list) => list._id !== change.id);
 					} else {
 						const index = lists.findIndex((list) => list._id === change.id);
-						if (change.doc) {
+						if (change.doc && change.doc.type === 'list') {
 							if (index === -1) {
 								lists = [...lists, change.doc];
 							} else {
