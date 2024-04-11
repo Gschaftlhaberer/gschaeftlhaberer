@@ -3,10 +3,9 @@
 	import type { PageData } from './$types';
 	import { db, type ExistingDocument, type ProductList as PL } from '$lib/db';
 	import ProductList from '$lib/components/ProductList.svelte';
-	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 
 	export let data: PageData;
-	console.log($db);
 
 	export let lists: ExistingDocument<PL>[] = [];
 	let cancel_changes: (() => void)[] = [];
@@ -22,26 +21,23 @@
 	});
 
 	data.lists.then((result) => {
-		lists = result.docs;
-		cancel_changes = [
-			...cancel_changes,
+		lists = result.docs as never[] | ExistingDocument<PL>[];
+		if (browser) {
 			$db
 				.changes({
 					since: 'now',
 					live: true,
 					include_docs: true,
 					filter: (doc) => {
-						console.log(doc);
 						return doc.type === 'list' || doc._deleted;
 					}
 				})
 				.on('change', (change) => {
-					console.log('change', change);
 					if (change.deleted) {
 						lists = lists.filter((list) => list._id !== change.id);
 					} else {
 						const index = lists.findIndex((list) => list._id === change.id);
-						if (change.doc) {
+						if (change.doc && change.doc.type === 'list') {
 							if (index === -1) {
 								lists = [...lists, change.doc];
 							} else {
@@ -51,8 +47,8 @@
 							console.error('Unreachable. Change event without doc.');
 						}
 					}
-				}).cancel
-		];
+				}).cancel;
+		}
 		return result;
 	});
 </script>
@@ -75,4 +71,13 @@
 	{:catch error}
 		<Alert color="red">Ein Fehler ist aufgetreten: {error.message}</Alert>
 	{/await}
+
+	<!-- Button zum Erstellen einer neuen Liste -->
+	<a
+		href="/createlist"
+		class="mt-5 inline-flex items-center justify-center rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
+	>
+		<i class="fas fa-plus mr-2"></i>
+		<span>Neue Liste erstellen</span>
+	</a>
 </div>

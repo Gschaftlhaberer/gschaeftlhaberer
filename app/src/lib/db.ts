@@ -20,4 +20,11 @@ export interface ProductList {
 	name: string;
 }
 
-export const db = writable(new PouchDB<ProductList>('shopping'));
+export interface Product {
+	type: 'product';
+	list: string;
+	name: string;
+	count: number;
+}
+
+export const db = writable(new PouchDB<ProductList | Product>('shopping'));
