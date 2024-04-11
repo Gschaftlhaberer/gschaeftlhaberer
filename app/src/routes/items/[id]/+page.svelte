@@ -1,16 +1,17 @@
 <script lang="ts">
+	import Product from '$lib/components/Product.svelte';
 	import { Heading, ListPlaceholder, Alert, P } from 'flowbite-svelte';
 	import type { PageData } from './$types';
-	import { db, type ExistingDocument, type ProductList as PL } from '$lib/db';
-	import ProductList from '$lib/components/ProductList.svelte';
+	import { db, type ExistingDocument, type Product as PT } from '$lib/db';
 	import { browser } from '$app/environment';
+	console.log($db);
 
 	export let data: PageData;
 
-	export let lists: ExistingDocument<PL>[] = [];
+	export let products: ExistingDocument<PT>[] = [];
 
-	data.lists.then((result) => {
-		lists = result.docs as never[] | ExistingDocument<PL>[];
+	data.products.then((result) => {
+		products = result.docs as ExistingDocument<PT>[];
 		if (browser) {
 			$db
 				.changes({
@@ -18,19 +19,19 @@
 					live: true,
 					include_docs: true,
 					filter: (doc) => {
-						return doc.type === 'list' || doc._deleted;
+						return doc.type === 'product' || doc._deleted;
 					}
 				})
 				.on('change', (change) => {
 					if (change.deleted) {
-						lists = lists.filter((list) => list._id !== change.id);
+						products = products.filter((list) => list._id !== change.id);
 					} else {
-						const index = lists.findIndex((list) => list._id === change.id);
-						if (change.doc && change.doc.type === 'list') {
+						const index = products.findIndex((list) => list._id === change.id);
+						if (change.doc && change.doc.type === 'product') {
 							if (index === -1) {
-								lists = [...lists, change.doc];
+								products = [...products, change.doc];
 							} else {
-								lists[index] = change.doc;
+								products[index] = change.doc;
 							}
 						} else {
 							console.error('Unreachable. Change event without doc.');
@@ -49,13 +50,13 @@
 <Heading class="my-5 text-center">G'schäft'l<wbr />Haberer</Heading>
 
 <div class="mb-5 mt-12 flex flex-col items-center">
-	{#await data.lists}
+	{#await data.products}
 		<ListPlaceholder class="w-full max-w-sm" />
 	{:then}
-		{#each lists as list}
-			<ProductList productlist={list} class="my-2" />
+		{#each products as product}
+			<Product {product} class="my-2" />
 		{:else}
-			<P>Keine Listen vorhanden</P>
+			<P>Keine Produkte vorhanden</P>
 		{/each}
 	{:catch error}
 		<Alert color="red">Ein Fehler ist aufgetreten: {error.message}</Alert>
