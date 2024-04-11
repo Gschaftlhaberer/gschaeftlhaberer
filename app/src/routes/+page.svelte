@@ -4,6 +4,7 @@
 	import { db, type ExistingDocument, type ProductList as PL } from '$lib/db';
 	import ProductList from '$lib/components/ProductList.svelte';
 	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 
