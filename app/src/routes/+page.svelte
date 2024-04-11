@@ -8,6 +8,17 @@
 	export let data: PageData;
 
 	export let lists: ExistingDocument<PL>[] = [];
+	let cancel_changes: (() => void)[] = [];
+
+	onMount(() => {
+		return () => {
+			cancel_changes.forEach((cancel) => {
+				if (cancel) {
+					cancel();
+				}
+			});
+		};
+	});
 
 	data.lists.then((result) => {
 		lists = result.docs as never[] | ExistingDocument<PL>[];
