@@ -1,10 +1,13 @@
 <script lang="ts">
-	import { Heading, ListPlaceholder, Alert, P } from 'flowbite-svelte';
+	import { Heading, ListPlaceholder, Alert, P, Modal, Button, Label, Input } from 'flowbite-svelte';
 	import type { PageData } from './$types';
 	import { db, type ExistingDocument, type ProductList as PL } from '$lib/db';
 	import ProductList from '$lib/components/ProductList.svelte';
 	import { browser } from '$app/environment';
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
+	import PlusOutline from '~icons/flowbite/plus-outline';
+	import { getSlug } from '$lib';
 
 	export let data: PageData;
 
@@ -52,6 +55,22 @@
 		}
 		return result;
 	});
+
+	let name = '';
+	let createModal = false;
+
+	async function addList() {
+		if (name.trim() !== '') {
+			await get(db).put({
+				_id: getSlug(name),
+				type: 'list',
+				name: name,
+				version: ''
+			});
+			name = '';
+			createModal = false;
+		}
+	}
 </script>
 
 <svelte:head>
@@ -74,11 +93,30 @@
 	{/await}
 
 	<!-- Button zum Erstellen einer neuen Liste -->
-	<a
-		href="/createlist"
-		class="mt-5 inline-flex items-center justify-center rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700"
+	<Button
+		size="xl"
+		on:click={() => (createModal = true)}
+		class="mt-5 flex flex-row items-center justify-center gap-2"
 	>
-		<i class="fas fa-plus mr-2"></i>
+		<PlusOutline />
 		<span>Neue Liste erstellen</span>
-	</a>
+	</Button>
 </div>
+
+<Modal bind:open={createModal} outsideclose>
+	<form class="flex flex-col space-y-6" on:submit|preventDefault={addList}>
+		<Heading tag="h4">Neue Einkaufsliste erstellen</Heading>
+		<Label for="list-name" class="space-y-2"
+			><span>Name der Einkaufsliste</span>
+			<Input
+				id="list-name"
+				bind:value={name}
+				placeholder="List name"
+				required
+				class="w-full"
+			/></Label
+		>
+
+		<Button type="submit" variant="primary" class="w-full">Liste hinzufügen</Button>
+	</form>
+</Modal>

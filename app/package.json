@@ -51,5 +51,9 @@
 		"vitest": "^1.2.0",
 		"yaml": "^2.4.1"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@types/speakingurl": "^13.0.6",
+		"speakingurl": "^14.0.1"
+	}
 }
