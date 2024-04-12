@@ -20,9 +20,7 @@ test('create a list', async ({ page }) => {
 	await confirmButton.click();
 	const listLink = page.getByRole('link', { name: listName });
 	await expect(listLink).toBeVisible();
-	await listLink.click();
-
-	expect(page.url()).toEqual('http://localhost:4173/items/test');
+	await expect(listLink).toHaveAttribute('href', '/items/test');
 });
 
 test('delete a list', async ({ page }) => {

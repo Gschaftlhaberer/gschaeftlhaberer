@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { ExistingDocument, Product, ProductList } from '$lib/db';
+	import type { ExistingDocument, Product } from '$lib/db';
 	import { db as DB } from '$lib/db';
 	import { get } from 'svelte/store';
-	import { Card, Heading, Span, Button } from 'flowbite-svelte';
+	import { Card, Heading, Button } from 'flowbite-svelte';
 
 	export let product: ExistingDocument<Product>;
 

@@ -3,8 +3,6 @@
 	import { db } from '$lib/db';
 	import { Input, Button, Heading, Label } from 'flowbite-svelte';
 	let link: string = '';
-	let request_success = false;
-	let replicationError: string | null = null;
 	let storedLink = browser ? localStorage.getItem('syncLink') : '';
 
 	function validateLink(value: string): boolean {
@@ -15,11 +13,11 @@
 	$: isValidLink = link !== '' && validateLink(link);
 
 	// Handler für Sync-Ereignisse
-	function onSyncChange(change: any) {
+	function onSyncChange(change: unknown) {
 		console.log('Sync change:', change);
 	}
 
-	function onSyncPaused(error: any) {
+	function onSyncPaused(error: unknown) {
 		if (error) {
 			console.log('Sync paused due to replication error', error);
 		} else {
@@ -27,17 +25,13 @@
 		}
 	}
 
-	function onSyncError(error: any) {
+	function onSyncError(error: unknown) {
 		console.error('Sync error:', error);
-		replicationError =
-			'Fehler bei der Synchronisation. Bitte überprüfen Sie den Link und versuchen Sie es erneut.';
 	}
 
 	async function handleReplication() {
 		if (isValidLink) {
 			const opts = { live: true, retry: true };
-			request_success = false;
-			replicationError = null;
 			$db.replicate
 				.from(link)
 				.on('complete', function () {
@@ -46,7 +40,6 @@
 						.on('change', onSyncChange)
 						.on('paused', onSyncPaused)
 						.on('error', onSyncError);
-					request_success = true;
 				})
 				.on('error', onSyncError);
 
