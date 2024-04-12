@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { db } from '$lib/db';
-	import { Input, Button, P, Heading, Label } from 'flowbite-svelte';
+	import { Input, Button, Heading, Label } from 'flowbite-svelte';
 	let link: string = '';
 	let request_success = false;
 	let replicationError: string | null = null;
-	let storedLink = localStorage.getItem('syncLink');
+	let storedLink = browser ? localStorage.getItem('syncLink') : '';
 
 	function validateLink(value: string): boolean {
 		value = value.trim();
