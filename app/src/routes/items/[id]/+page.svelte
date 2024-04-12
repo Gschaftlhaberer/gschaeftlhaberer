@@ -1,10 +1,12 @@
 <script lang="ts">
 	import Product from '$lib/components/Product.svelte';
-	import { Heading, ListPlaceholder, Alert, P } from 'flowbite-svelte';
+	import { Heading, ListPlaceholder, Alert, P, Modal, Label } from 'flowbite-svelte';
 	import type { PageData } from './$types';
 	import { db, type ExistingDocument, type Product as PT } from '$lib/db';
 	import { browser } from '$app/environment';
-	console.log($db);
+	import PlusOutline from '~icons/flowbite/plus-outline';
+	import { get } from 'svelte/store';
+	import { Button, Input } from 'flowbite-svelte';
 
 	export let data: PageData;
 
@@ -42,10 +44,6 @@
 		return result;
 	});
 
-	import { db as DB } from '$lib/db';
-	import { get } from 'svelte/store';
-	import { Button, Card, Input } from 'flowbite-svelte';
-
 	let showPopup = false;
 	let productName = '';
 	let productCount = 1;
@@ -53,8 +51,7 @@
 	async function createProduct() {
 		if (productName.trim() !== '') {
 			console.log(`Produkt erstellt: ${productName}`);
-			const db = get(DB);
-			await db.put({
+			await get(db).put({
 				_id: `${data.id}:${productName}`,
 				type: 'product',
 				list: data.id,
@@ -89,25 +86,38 @@
 </div>
 
 <div class="flex items-center justify-center">
-	<Button on:click={() => (showPopup = true)}>Produkt erstellen</Button>
+	<Button
+		size="xl"
+		on:click={() => (showPopup = true)}
+		class="mt-5 flex flex-row items-center justify-center gap-2"
+	>
+		<PlusOutline />
+		Produkt erstellen</Button
+	>
 </div>
 
-{#if showPopup}
-	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-		<Card class="rounded bg-white p-6 shadow-lg">
-			<h2 class="mb-4 text-center text-xl font-bold">Produkt erstellen</h2>
-			<Input bind:value={productName} placeholder="Produktname" class="mb-4" />
-			<Input type="number" bind:value={productCount} placeholder="Anzahl" class="mb-4" />
-			<div class="flex justify-end space-x-2">
-				<Button on:click={createProduct} class="bg-blue-500 text-white hover:bg-blue-700"
-					>Erstellen</Button
-				>
-				<Button
-					variant="secondary"
-					on:click={() => (showPopup = false)}
-					class="bg-gray-500 text-white hover:bg-gray-700">Schließen</Button
-				>
-			</div>
-		</Card>
-	</div>
-{/if}
+<Modal bind:open={showPopup} outsideclose>
+	<Heading tag="h2">Produkt erstellen</Heading>
+	<form on:submit|preventDefault={createProduct}>
+		<Label for="product-name"
+			><span>Produktname</span>
+			<Input bind:value={productName} id="product-name" class="mb-4" required /></Label
+		>
+		<Label for="product-count"
+			><span>Anzahl</span>
+			<Input
+				type="number"
+				bind:value={productCount}
+				id="product-count"
+				class="mb-4"
+				required
+			/></Label
+		>
+		<div class="flex justify-end space-x-2">
+			<Button type="submit">Erstellen</Button>
+			<Button type="reset" color="alternative" on:click={() => (showPopup = false)}
+				>Schließen</Button
+			>
+		</div>
+	</form>
+</Modal>
