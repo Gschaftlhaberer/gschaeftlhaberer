@@ -1,0 +1,13 @@
+{
+	"name": "G'schäft'lHaberer",
+	"lang": "de",
+	"short_name": "G'schäft'lHaberer",
+	"description": "PWA für die App G'schäft'lHaberer",
+	"start_url": "https://gschaeftlhaberer.at/",
+	"scope": "https://gschaeftlhaberer.at/",
+	"display": "browser",
+	"theme_color": "#6f6260",
+	"background_color": "#6f6260",
+	"orientation": "any",
+	"icons": []
+}

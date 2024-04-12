@@ -20,6 +20,7 @@
 			class={activeUrl.startsWith('/settings') ? svgActiveClass : svgClass}
 		/>
 	</BottomNavItem>
+
 	<DarkMode
 		size="md"
 		btnClass="group flex items-center justify-center rounded-none text-gray-500 hover:text-primary-600 dark:text-gray-400 dark:hover:text-primary-500 hover:bg-gray-50 dark:hover:bg-gray-800"
